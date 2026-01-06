@@ -310,20 +310,47 @@
             cart: 0
         };
 
-        // --- Seeding Data (With Multi-Image Support) ---
-        // Added 'images' array containing the main image + additional detail/lifestyle shots
-        const seedData = await fetch('products.json');
+        // --- Load Local Data (Replaces inline seedData) ---
+        async function loadLocalData() {
+            try {
+                // Note: This requires products.json to be served from the same path
+                // In some preview environments, this might require specific file serving config
+                const response = await fetch('./products.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                console.log("Loaded local data:", data);
+                return data;
+            } catch (error) {
+                console.error("Failed to load local products.json:", error);
+                // Return empty array or fallback logic could go here
+                return []; 
+            }
+        }
 
         // --- Functions ---
 
         async function initApp() {
+            // Always try to load local data first (essential for offline/seeding)
+            const localData = await loadLocalData();
+            
             if (isOffline) {
                 console.log("Starting in Offline Mode.");
-                allProducts = seedData;
-                renderFilters();
-                applyFilters();
-                // Update UI to show offline state
-                document.getElementById('product-count').textContent = "Offline Mode";
+                allProducts = localData;
+                
+                if (allProducts.length === 0) {
+                     document.getElementById('product-grid').innerHTML = `
+                        <div class="col-span-full py-20 text-center text-red-500">
+                            <p>無法載入離線資料 (products.json)</p>
+                        </div>`;
+                     document.getElementById('product-count').textContent = "Error";
+                } else {
+                    renderFilters();
+                    applyFilters();
+                    // Update UI to show offline state
+                    document.getElementById('product-count').textContent = "Offline Mode";
+                }
                 return;
             }
 
@@ -337,27 +364,29 @@
 
                 const user = auth.currentUser;
                 if (user) {
-                    await checkAndSeedData(user.uid);
-                    await fetchProducts(user.uid);
+                    await checkAndSeedData(user.uid, localData);
+                    await fetchProducts(user.uid, localData);
                 }
             } catch (e) {
                 console.error("Connection failed, switching to offline mode:", e);
-                // Fallback to offline
-                allProducts = seedData;
+                // Fallback to offline with local data
+                allProducts = localData;
                 renderFilters();
                 applyFilters();
                 document.getElementById('product-count').textContent = "Offline Mode";
             }
         }
 
-        async function checkAndSeedData(uid) {
+        async function checkAndSeedData(uid, localData) {
+            if (!localData || localData.length === 0) return;
+
             // Updated collection name to force re-seeding with new data structure
             const productsRef = collection(db, 'artifacts', appId, 'public', 'data', 'products_v4'); 
             const snapshot = await getDocs(productsRef);
             
             if (snapshot.empty) {
-                console.log("Seeding Database with Images...");
-                const promises = seedData.map(item => 
+                console.log("Seeding Database with Local JSON...");
+                const promises = localData.map(item => 
                     setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products_v4', item.id), item)
                 );
                 await Promise.all(promises);
@@ -365,7 +394,7 @@
             }
         }
 
-        async function fetchProducts(uid) {
+        async function fetchProducts(uid, localData) {
             const productsRef = collection(db, 'artifacts', appId, 'public', 'data', 'products_v4');
             const q = query(productsRef); 
             
@@ -376,6 +405,11 @@
                     allProducts.push(doc.data());
                 });
                 
+                // If DB is empty for some reason, fallback to local
+                if (allProducts.length === 0 && localData.length > 0) {
+                     allProducts = localData;
+                }
+
                 // Extract Unique Filters
                 renderFilters();
                 
@@ -385,7 +419,7 @@
             } catch (e) {
                 console.error("Error fetching products, fallback to seed data:", e);
                 // Fallback
-                allProducts = seedData;
+                allProducts = localData;
                 renderFilters();
                 applyFilters();
                 document.getElementById('product-count').textContent = "Offline Mode";
