@@ -435,17 +435,18 @@
 
         async function initApp() {
             // Auth Logic
-            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                await signInWithCustomToken(auth, __initial_auth_token);
-            } else {
-                await signInAnonymously(auth);
-            }
+            //if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            //    await signInWithCustomToken(auth, __initial_auth_token);
+            //} else {
+            //    await signInAnonymously(auth);
+            //}
 
-            const user = auth.currentUser;
-            if (user) {
-                await checkAndSeedData(user.uid);
-                await fetchProducts(user.uid);
-            }
+            //const user = auth.currentUser;
+            //if (user) {
+            //    await checkAndSeedData(user.uid);
+            //    await fetchProducts(user.uid);
+            //}
+            await checkAndSeedData();
         }
 
         async function checkAndSeedData(uid) {
