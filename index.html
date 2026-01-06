@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ti-Dal | 潮態度</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+
+        :root {
+            --braun-orange: #ea5e00;
+            --braun-dark: #0b0b0b;
+            --braun-grey: #8c8c8c;
+            --braun-light-grey: #f4f4f4;
+            --bg-color: #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--braun-dark);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Dieter Rams Inspired Elements */
+        .rams-card {
+            background: white;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .rams-card:hover {
+            transform: translateY(-4px);
+        }
+
+        /* Product Image Hover Effect */
+        .rams-card:hover img {
+            filter: grayscale(0%);
+            transform: scale(1.03);
+        }
+        
+        .product-img-wrapper img {
+            filter: grayscale(20%); /* Slightly muted by default for uniformity */
+            transition: all 0.5s ease;
+        }
+
+        .rams-btn {
+            background-color: var(--braun-light-grey);
+            color: var(--braun-dark);
+            border-radius: 2px;
+            font-weight: 500;
+            font-size: 0.8rem;
+            letter-spacing: 0.02em;
+            transition: all 0.2s ease;
+        }
+
+        .rams-btn:hover, .rams-btn.active {
+            background-color: var(--braun-dark);
+            color: white;
+        }
+
+        .rams-input {
+            background-color: var(--braun-light-grey);
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        .rams-input:focus {
+            background-color: white;
+            border-color: var(--braun-dark);
+            outline: none;
+        }
+
+        .color-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+            border: 1px solid rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .color-dot.active::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border: 1px solid var(--braun-orange);
+            border-radius: 50%;
+        }
+
+        /* Thumbnail Styles */
+        .thumbnail {
+            opacity: 0.5;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+        .thumbnail:hover {
+            opacity: 0.8;
+        }
+        .thumbnail.active {
+            opacity: 1;
+            border-color: var(--braun-orange);
+        }
+
+        /* Logo Styling */
+        .logo-font {
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.04em;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #fff; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ddd; 
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Redesigned Logo -->
+            <div class="flex items-center gap-2 group cursor-pointer" onclick="window.location.reload()">
+                <div class="relative flex items-center">
+                    <!-- Geometric Logo Mark -->
+                    <div class="h-8 w-8 bg-black mr-2 rounded-sm flex items-center justify-center">
+                        <div class="w-3 h-3 bg-[var(--braun-orange)] rounded-full"></div>
+                    </div>
+                    <!-- Typographic Logo -->
+                    <h1 class="text-3xl font-bold logo-font text-black tracking-tighter leading-none">
+                        Ti-Dal
+                    </h1>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-6">
+                <button id="cart-btn" class="relative group">
+                    <span class="text-xs font-medium mr-1 group-hover:text-[var(--braun-orange)] transition-colors">購物車</span>
+                    <i class="fas fa-shopping-bag text-lg text-gray-800 group-hover:text-[var(--braun-orange)] transition-colors"></i>
+                    <span id="cart-count" class="absolute -top-1 -right-2 bg-[var(--braun-orange)] text-white text-[9px] font-bold h-4 w-4 flex items-center justify-center rounded-full opacity-0 transition-opacity">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex flex-col md:flex-row max-w-7xl mx-auto w-full pt-8 pb-12 px-4 sm:px-6 lg:px-8 gap-10">
+        
+        <!-- Filters (Sidebar) -->
+        <aside class="w-full md:w-64 flex-shrink-0 space-y-10">
+            
+            <!-- Search -->
+            <div class="relative group">
+                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-[var(--braun-orange)] transition-colors"></i>
+                <input type="text" id="search-input" placeholder="搜尋產品編號或名稱..." class="rams-input w-full pl-10 pr-4 py-3 rounded-sm">
+            </div>
+
+            <!-- Filters -->
+            <div class="space-y-8">
+                <!-- Sizes -->
+                <div>
+                    <h3 class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-4">尺寸選擇</h3>
+                    <div class="flex flex-wrap gap-2" id="size-filters">
+                        <!-- Injected via JS -->
+                    </div>
+                </div>
+
+                <!-- Colors -->
+                <div>
+                    <h3 class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-4">顏色篩選</h3>
+                    <div class="flex flex-wrap gap-3" id="color-filters">
+                        <!-- Injected via JS -->
+                    </div>
+                </div>
+
+                <div class="pt-6 border-t border-gray-100">
+                    <button id="reset-filters" class="text-xs text-gray-400 hover:text-[var(--braun-dark)] transition-colors flex items-center gap-2">
+                        <i class="fas fa-times"></i> 重置篩選
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Product Grid -->
+        <div class="flex-grow">
+            <div class="flex justify-between items-end mb-8">
+                <h2 class="text-2xl font-semibold tracking-tight text-gray-900 logo-font">Collection</h2>
+                <span id="product-count" class="text-xs font-mono text-gray-400">Loading...</span>
+            </div>
+            
+            <div id="product-grid" class="grid grid-cols-2 gap-x-4 gap-y-10 md:gap-x-8 md:gap-y-12">
+                <!-- Product Cards Injected Here -->
+                <div class="col-span-full py-32 flex flex-col items-center justify-center text-gray-300 animate-pulse">
+                    <div class="h-8 w-8 bg-gray-200 rounded mb-4"></div>
+                    <p class="text-sm">載入資料庫中...</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Product Modal -->
+    <div id="product-modal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-white/60 backdrop-blur-md" id="modal-backdrop"></div>
+        <div class="absolute inset-x-0 bottom-0 md:top-1/2 md:left-1/2 md:bottom-auto md:-translate-x-1/2 md:-translate-y-1/2 bg-white w-full md:w-[900px] h-[90vh] md:h-[600px] md:rounded-sm shadow-2xl flex flex-col md:flex-row overflow-hidden transition-transform duration-500 transform translate-y-full md:translate-y-0 border border-gray-100" id="modal-content">
+            
+            <!-- Close Button -->
+            <button id="close-modal" class="absolute top-6 right-6 z-10 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-black hover:rotate-90 transition-all duration-300 bg-white rounded-full shadow-sm md:shadow-none">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+
+            <!-- Image Side -->
+            <div class="w-full md:w-1/2 bg-gray-50 flex flex-col h-1/2 md:h-full">
+                <!-- Main Image -->
+                <div class="flex-grow relative overflow-hidden h-full">
+                    <img id="modal-img" src="" alt="Product Detail" class="w-full h-full object-cover object-center transition-opacity duration-300">
+                </div>
+                <!-- Thumbnails Strip -->
+                <div class="h-20 bg-white border-t border-gray-100 p-3 flex gap-3 overflow-x-auto items-center flex-shrink-0" id="modal-thumbnails">
+                    <!-- Thumbnails Injected JS -->
+                </div>
+            </div>
+
+            <!-- Info Side -->
+            <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col h-1/2 md:h-full overflow-y-auto bg-white">
+                <span id="modal-category" class="text-[10px] font-bold text-[var(--braun-orange)] uppercase tracking-widest mb-3">Category</span>
+                <h2 id="modal-title" class="text-3xl font-bold mb-2 text-black logo-font tracking-tight">Product Title</h2>
+                <div class="w-10 h-0.5 bg-gray-200 mb-6"></div>
+                
+                <p id="modal-price" class="text-2xl font-medium text-gray-900 mb-6 font-mono">NT$ 0</p>
+                
+                <p id="modal-desc" class="text-gray-500 text-sm leading-7 mb-8 flex-grow">
+                    Description goes here.
+                </p>
+
+                <div class="space-y-8 mt-auto">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase text-gray-400 mb-3 tracking-widest">選擇尺寸</label>
+                        <div class="flex gap-3" id="modal-sizes"></div>
+                    </div>
+
+                    <button id="add-to-cart-action" class="w-full py-4 bg-black text-white text-sm font-medium hover:bg-[var(--braun-orange)] transition-colors duration-300 flex justify-center items-center gap-3 group">
+                        <span>加入購物車</span>
+                        <i class="fas fa-arrow-right text-xs transform group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-10 right-10 bg-white border-l-4 border-[var(--braun-orange)] text-black px-6 py-4 shadow-xl translate-y-32 opacity-0 transition-all duration-500 z-[110] flex items-center gap-4">
+        <div class="flex flex-col">
+            <span class="text-xs font-bold text-gray-400 uppercase">System</span>
+            <span class="text-sm font-medium">商品已加入購物清單</span>
+        </div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, getDocs, setDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- Configuration ---
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+        // --- Global State ---
+        let allProducts = [];
+        let filteredProducts = [];
+        let state = {
+            search: '',
+            size: null,
+            color: null,
+            cart: 0
+        };
+
+        // --- Seeding Data (With Multi-Image Support) ---
+        // Added 'images' array containing the main image + additional detail/lifestyle shots
+        const seedData = [
+            { 
+                id: 'p1', 
+                name: 'Ti-01 極簡結構T恤', 
+                price: 1280, 
+                category: '上衣', 
+                image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80',
+                images: [
+                    'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=600&q=80'
+                ],
+                sizes: ['S', 'M', 'L', 'XL'], 
+                colors: ['#FFFFFF', '#111111'], 
+                description: '以純粹的功能性為核心。採用高透氣機能棉，無縫線設計減少摩擦。適合日常與輕量運動。' 
+            },
+            { 
+                id: 'p2', 
+                name: 'Dal-Tech 機能跑褲', 
+                price: 1880, 
+                category: '下著', 
+                image: 'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?auto=format&fit=crop&w=600&q=80',
+                images: [
+                    'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1483721310020-03333e577078?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80'
+                ],
+                sizes: ['M', 'L', 'XL'], 
+                colors: ['#111111', '#ea5e00'], 
+                description: '專為長距離跑者設計。具備快速排汗系統與隱藏式反光條，確保夜間安全。' 
+            },
+            { 
+                id: 'p3', 
+                name: 'Aerodynamic 教練夾克', 
+                price: 3480, 
+                category: '外套', 
+                image: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=600&q=80',
+                images: [
+                    'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1559551409-dadc959f76b8?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1551488852-d814c937c191?auto=format&fit=crop&w=600&q=80'
+                ],
+                sizes: ['M', 'L'], 
+                colors: ['#4a4a4a', '#111111'], 
+                description: '空氣力學剪裁，抗風防潑水。霧面質感表面處理，展現低調的工業美學。' 
+            },
+            { 
+                id: 'p4', 
+                name: 'Module-1 訓練背心', 
+                price: 980, 
+                category: '上衣', 
+                image: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80',
+                images: [
+                    'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?auto=format&fit=crop&w=600&q=80'
+                ],
+                sizes: ['S', 'M', 'L'], 
+                colors: ['#FFFFFF', '#ea5e00'], 
+                description: '極輕量化設計，僅重 85g。高彈性纖維提供最大的活動自由度。' 
+            },
+            { 
+                id: 'p5', 
+                name: 'Core 壓縮長褲', 
+                price: 2180, 
+                category: '下著', 
+                image: 'https://images.unsplash.com/photo-1483721310020-03333e577078?auto=format&fit=crop&w=600&q=80',
+                images: [
+                    'https://images.unsplash.com/photo-1483721310020-03333e577078?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&w=600&q=80'
+                ],
+                sizes: ['S', 'M', 'L', 'XL'], 
+                colors: ['#111111'], 
+                description: '漸進式壓縮技術，支撐主要肌群，延緩疲勞累積。' 
+            },
+            { 
+                id: 'p6', 
+                name: 'Ti-Cap 速乾老帽', 
+                price: 880, 
+                category: '配件', 
+                image: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=600&q=80',
+                images: [
+                    'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=600&q=80'
+                ],
+                sizes: ['F'], 
+                colors: ['#111111', '#f0f0f0'], 
+                description: '經典六片式帽型，採用雷射穿孔透氣技術。' 
+            },
+            { 
+                id: 'p7', 
+                name: 'FZ9041-126 龍年帽踢', 
+                price: 2680, 
+                category: '外套', 
+                image: 'https://cdn.shopify.com/s/files/1/0603/3031/1875/files/main_a0dbb4e0-0c20-4beb-bbb4-6467e8f371b6_3840x.jpg?=75&v=1708317125',
+                images: [
+                    'https://cdn.shopify.com/s/files/1/0603/3031/1875/files/main_a0dbb4e0-0c20-4beb-bbb4-6467e8f371b6_3840x.jpg?=75&v=1708317125',
+                    'https://cdn.shopify.com/s/files/1/0603/3031/1875/files/3_a1bda423-bd1c-4fe1-a135-61016aab36cd_3840x.jpg?=75&v=1708317127',
+                    'https://cdn.shopify.com/s/files/1/0603/3031/1875/files/4_3f9c23e5-6900-44bf-aeef-12c80530fb02_3840x.jpg?=75&v=1708317131',
+                    'https://cdn.shopify.com/s/files/1/0603/3031/1875/files/5_9aaf4ffd-b8f2-40cc-846f-8e0329692825_3840x.jpg?=75&v=1708317133',
+                    'https://cdn.shopify.com/s/files/1/0603/3031/1875/files/1_d3d48d29-072b-46a5-a9fe-3050c6617183_3840x.jpg?=75&v=1708317128'
+                ],
+                sizes: ['S', 'M', 'L', 'XL', 'XXL'], 
+                colors: ['#f0f0f0', '#2a4f45'], 
+                description: '* Dri-FIT 技術保持乾爽 * 厚實加絨面料 * 右側設有拉鍊口袋 * 羅紋袖口及下擺 * 174/70，著L' 
+            },
+            { 
+                id: 'p8', 
+                name: 'DD2129-326 Nike Sports 男款連帽外套', 
+                price: 3980, 
+                category: '外套', 
+                image: 'https://cdn.shopify.com/s/files/1/0603/3031/1875/products/main-square_82177268-75cd-410b-a5fc-e4f57cc0c029_3840x.jpg?=75&v=1693988007',
+                images: [
+                    'https://cdn.shopify.com/s/files/1/0603/3031/1875/products/main-square_82177268-75cd-410b-a5fc-e4f57cc0c029_3840x.jpg?=75&v=1693988007',
+                    'https://cdn.shopify.com/s/files/1/0603/3031/1875/products/1_4e20af10-0b00-40f0-aa8e-bf375e42edc0_3840x.jpg?=75&v=1693988007',
+                    'https://cdn.shopify.com/s/files/1/0603/3031/1875/products/2_96936914-3754-4588-ac9c-b646d42715d6_3840x.jpg?=75&v=1693988007'
+                ],
+                sizes: [ 'M', 'L', 'XL'], 
+                colors: ['#2a4f45'], 
+                description: '內層抓絨設計，適合秋冬戶外訓練。保持核心溫度同時不失透氣性。' 
+            },
+            { 
+                id: 'p9', 
+                name: 'CZ7858-334 Nike NSW Club Hoodie 橄欖綠', 
+                price: 2780, 
+                category: '外套', 
+                image: 'https://cdn.shopify.com/s/files/1/0603/3031/1875/files/main-square_355f5950-ca6c-4b20-9309-5a2fc98dccda_3840x.jpg',
+                images: [
+                    'https://cdn.shopify.com/s/files/1/0603/3031/1875/files/main-square_355f5950-ca6c-4b20-9309-5a2fc98dccda_3840x.jpg?=75&v=1716877428'
+                ],
+                sizes: ['S'], 
+                colors: ['#2a4f45'], 
+                description: 'Nike Sportswear Tech Fleece Full-Zip Hoodie (Nike Tech Fleece 全拉鍊連帽外套)' 
+            }
+        ];
+
+        // --- Functions ---
+
+        async function initApp() {
+            // Auth Logic
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                await signInWithCustomToken(auth, __initial_auth_token);
+            } else {
+                await signInAnonymously(auth);
+            }
+
+            const user = auth.currentUser;
+            if (user) {
+                await checkAndSeedData(user.uid);
+                await fetchProducts(user.uid);
+            }
+        }
+
+        async function checkAndSeedData(uid) {
+            // Updated collection name to force re-seeding with new data structure
+            const productsRef = collection(db, 'artifacts', appId, 'public', 'data', 'products_v3'); 
+            const snapshot = await getDocs(productsRef);
+            
+            if (snapshot.empty) {
+                console.log("Seeding Database with Images...");
+                const promises = seedData.map(item => 
+                    setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products_v3', item.id), item)
+                );
+                await Promise.all(promises);
+                console.log("Database Seeded.");
+            }
+        }
+
+        async function fetchProducts(uid) {
+            const productsRef = collection(db, 'artifacts', appId, 'public', 'data', 'products_v3');
+            const q = query(productsRef); 
+            
+            try {
+                const snapshot = await getDocs(q);
+                allProducts = [];
+                snapshot.forEach(doc => {
+                    allProducts.push(doc.data());
+                });
+                
+                // Extract Unique Filters
+                renderFilters();
+                
+                // Initial Render
+                applyFilters();
+                
+            } catch (e) {
+                console.error("Error fetching products:", e);
+                document.getElementById('product-grid').innerHTML = `<p class="col-span-full text-center text-red-500">無法載入商品，請稍後再試。</p>`;
+            }
+        }
+
+        // --- Rendering ---
+
+        function renderFilters() {
+            // Extract unique sizes and colors
+            const sizes = new Set();
+            const colors = new Set();
+
+            allProducts.forEach(p => {
+                p.sizes.forEach(s => sizes.add(s));
+                p.colors.forEach(c => colors.add(c));
+            });
+
+            // Render Sizes
+            const sizeContainer = document.getElementById('size-filters');
+            sizeContainer.innerHTML = '';
+            Array.from(sizes).sort().forEach(size => {
+                const btn = document.createElement('button');
+                btn.className = `rams-btn px-3 py-1 ${state.size === size ? 'active' : ''}`;
+                btn.innerText = size;
+                btn.onclick = () => toggleFilter('size', size, btn);
+                sizeContainer.appendChild(btn);
+            });
+
+            // Render Colors
+            const colorContainer = document.getElementById('color-filters');
+            colorContainer.innerHTML = '';
+            Array.from(colors).forEach(color => {
+                const dot = document.createElement('div');
+                dot.className = `color-dot ${state.color === color ? 'active' : ''}`;
+                dot.style.backgroundColor = color;
+                dot.title = color;
+                dot.onclick = () => toggleFilter('color', color, dot);
+                colorContainer.appendChild(dot);
+            });
+        }
+
+        function toggleFilter(type, value, element) {
+            // Toggle logic
+            if (state[type] === value) {
+                state[type] = null; // Deselect
+            } else {
+                state[type] = value; // Select
+            }
+            renderFilters(); // Re-render to update active classes
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const term = state.search.toLowerCase();
+            
+            filteredProducts = allProducts.filter(p => {
+                const matchesName = p.name.toLowerCase().includes(term) || p.category.includes(term);
+                const matchesSize = state.size ? p.sizes.includes(state.size) : true;
+                const matchesColor = state.color ? p.colors.includes(state.color) : true;
+                return matchesName && matchesSize && matchesColor;
+            });
+
+            renderProductGrid();
+        }
+
+        function renderProductGrid() {
+            const grid = document.getElementById('product-grid');
+            const countLabel = document.getElementById('product-count');
+            
+            countLabel.innerText = `${filteredProducts.length} items`;
+            grid.innerHTML = '';
+
+            if (filteredProducts.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-20 text-center">
+                        <p class="text-gray-400 text-sm font-light mb-2">沒有找到符合的商品</p>
+                        <button onclick="document.getElementById('reset-filters').click()" class="text-[var(--braun-orange)] text-sm underline">清除篩選條件</button>
+                    </div>
+                `;
+                return;
+            }
+
+            filteredProducts.forEach((product, index) => {
+                const card = document.createElement('div');
+                card.className = 'rams-card group cursor-pointer flex flex-col h-full';
+                // Staggered fade in
+                card.style.opacity = '0';
+                card.style.animation = `fadeIn 0.5s ease forwards ${index * 0.05}s`;
+                card.onclick = () => openModal(product);
+
+                card.innerHTML = `
+                    <div class="product-img-wrapper aspect-square bg-gray-50 overflow-hidden relative">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover" loading="lazy">
+                        ${product.colors.includes('#ea5e00') ? '<span class="absolute top-0 right-0 w-0 h-0 border-t-[20px] border-r-[20px] border-t-[var(--braun-orange)] border-r-[var(--braun-orange)] border-b-[20px] border-b-transparent border-l-[20px] border-l-transparent"></span>' : ''}
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <div class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mb-1">${product.category}</div>
+                        <h3 class="font-medium text-gray-900 mb-1 group-hover:text-[var(--braun-orange)] transition-colors leading-tight">${product.name}</h3>
+                        <div class="mt-auto pt-4 flex items-center justify-between border-t border-gray-50">
+                            <span class="text-sm font-semibold text-gray-700 font-mono">NT$ ${product.price.toLocaleString()}</span>
+                            <div class="flex gap-1">
+                                ${product.colors.slice(0, 3).map(c => `<span class="w-2 h-2 rounded-full border border-gray-200" style="background-color:${c}"></span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- Modal Logic ---
+        const modal = document.getElementById('product-modal');
+        const modalContent = document.getElementById('modal-content');
+        
+        function openModal(product) {
+            document.getElementById('modal-category').innerText = product.category;
+            document.getElementById('modal-title').innerText = product.name;
+            document.getElementById('modal-price').innerText = `NT$ ${product.price.toLocaleString()}`;
+            document.getElementById('modal-desc').innerText = product.description;
+            
+            // Image Gallery Logic
+            const mainImg = document.getElementById('modal-img');
+            const thumbnailsContainer = document.getElementById('modal-thumbnails');
+            
+            // Use 'images' array if available, otherwise fallback to single 'image' wrapped in array
+            const images = product.images || [product.image];
+            
+            // Set initial main image
+            mainImg.src = images[0];
+            mainImg.style.opacity = '0'; // Fade reset
+            setTimeout(() => mainImg.style.opacity = '1', 50);
+
+            // Render Thumbnails
+            thumbnailsContainer.innerHTML = '';
+            if (images.length > 1) {
+                thumbnailsContainer.classList.remove('hidden');
+                images.forEach((imgSrc, index) => {
+                    const thumb = document.createElement('img');
+                    thumb.src = imgSrc;
+                    thumb.className = `thumbnail w-14 h-14 object-cover rounded-sm ${index === 0 ? 'active' : ''}`;
+                    thumb.onclick = () => {
+                        // Switch Main Image
+                        mainImg.style.opacity = '0.5';
+                        setTimeout(() => {
+                            mainImg.src = imgSrc;
+                            mainImg.style.opacity = '1';
+                        }, 150);
+                        
+                        // Update Active State
+                        Array.from(thumbnailsContainer.children).forEach(c => c.classList.remove('active'));
+                        thumb.classList.add('active');
+                    };
+                    thumbnailsContainer.appendChild(thumb);
+                });
+            } else {
+                thumbnailsContainer.classList.add('hidden');
+            }
+
+            // Render Size Selectors in Modal
+            const sizesContainer = document.getElementById('modal-sizes');
+            sizesContainer.innerHTML = '';
+            product.sizes.forEach(size => {
+                const btn = document.createElement('button');
+                btn.className = 'w-10 h-10 border border-gray-200 text-gray-500 hover:border-black hover:text-black transition-all text-sm font-medium';
+                btn.innerText = size;
+                btn.onclick = (e) => {
+                    Array.from(sizesContainer.children).forEach(c => c.classList.remove('bg-black', 'text-white', 'border-black'));
+                    e.target.classList.add('bg-black', 'text-white', 'border-black');
+                };
+                sizesContainer.appendChild(btn);
+            });
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modalContent.classList.remove('translate-y-full');
+            }, 10);
+        }
+
+        function closeModal() {
+            modalContent.classList.add('translate-y-full');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // --- Event Listeners ---
+        document.getElementById('close-modal').onclick = closeModal;
+        document.getElementById('modal-backdrop').onclick = closeModal;
+
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            state.search = e.target.value;
+            applyFilters();
+        });
+
+        document.getElementById('reset-filters').onclick = () => {
+            state.search = '';
+            state.size = null;
+            state.color = null;
+            document.getElementById('search-input').value = '';
+            renderFilters();
+            applyFilters();
+        };
+
+        // Add to Cart Simulation
+        document.getElementById('add-to-cart-action').onclick = () => {
+            state.cart++;
+            
+            // Update UI
+            const badge = document.getElementById('cart-count');
+            badge.innerText = state.cart;
+            badge.classList.remove('opacity-0');
+            badge.classList.add('animate-bounce');
+            
+            closeModal();
+
+            // Show Toast
+            const toast = document.getElementById('toast');
+            toast.classList.remove('translate-y-32', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-32', 'opacity-0');
+            }, 2500);
+        };
+
+        // Style helper for fade-in animation
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // --- Init ---
+        initApp();
+
+    </script>
+</body>
+</html>
