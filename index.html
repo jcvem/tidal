@@ -451,10 +451,11 @@
 
         async function checkAndSeedData(uid) {
             // Updated collection name to force re-seeding with new data structure
-            const productsRef = collection(db, 'artifacts', appId, 'public', 'data', 'products_v3'); 
-            const snapshot = await getDocs(productsRef);
+            // const productsRef = collection(db, 'artifacts', appId, 'public', 'data', 'products_v3'); 
+            // const snapshot = await getDocs(productsRef);
             
-            if (snapshot.empty) {
+            //if (snapshot.empty) {
+            if (true) {
                 console.log("Seeding Database with Images...");
                 const promises = seedData.map(item => 
                     setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products_v3', item.id), item)
