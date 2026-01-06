@@ -14,7 +14,7 @@
             "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/1_d3d48d29-072b-46a5-a9fe-3050c6617183_3840x.jpg?=75&v=1708317128"
         ],
         "sizes": ["S", "M", "L", "XL", "XXL"], 
-        "colors": ["#f0f0f0", "#2a4f45"], 
+        "colors": ["#f0f0f0"], 
         "description": "* Dri-FIT 技術保持乾爽 * 厚實加絨面料 * 右側設有拉鍊口袋 * 羅紋袖口及下擺 * 174/70，著L" 
     },
     { 
@@ -45,6 +45,21 @@
         ],
         "sizes": ["S"], 
         "colors": ["#2a4f45"], 
+        "description": "Nike Sportswear Tech Fleece Full-Zip Hoodie (Nike Tech Fleece 全拉鍊連帽外套)" 
+    },
+    { 
+        "id": "p10", 
+        "spu": "DX4303-084",
+        "name": "DX4303-084 Nike Forward Hoodie 煙灰", 
+        "price": 2780, 
+        "category": "帽踢", 
+        "image": "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/main-square_eb5bb500-b7b3-4373-826a-32a288e3da1f_3840x.jpg?=75&v=1699607881",
+        "images": [
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/1_b8353ace-3582-4abf-b71e-4aa02657d6ba_3840x.jpg?=75&v=1699607880",
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/2_4d5f8fc0-107a-4244-a223-11e4ee428d48_3840x.jpg?=75&v=1699607882",
+        ],
+        "sizes": ["L"], 
+        "colors": ["#f0f0f083"], 
         "description": "Nike Sportswear Tech Fleece Full-Zip Hoodie (Nike Tech Fleece 全拉鍊連帽外套)" 
     }
 ]
