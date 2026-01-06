@@ -1,0 +1,50 @@
+[
+    { 
+        "id": "p7", 
+        "spu": "FZ9041-126",
+        "name": "FZ9041-126 龍年帽踢", 
+        "price": 2680, 
+        "category": "帽踢", 
+        "image": "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/main_a0dbb4e0-0c20-4beb-bbb4-6467e8f371b6_3840x.jpg?=75&v=1708317125",
+        "images": [
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/main_a0dbb4e0-0c20-4beb-bbb4-6467e8f371b6_3840x.jpg?=75&v=1708317125",
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/3_a1bda423-bd1c-4fe1-a135-61016aab36cd_3840x.jpg?=75&v=1708317127",
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/4_3f9c23e5-6900-44bf-aeef-12c80530fb02_3840x.jpg?=75&v=1708317131",
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/5_9aaf4ffd-b8f2-40cc-846f-8e0329692825_3840x.jpg?=75&v=1708317133",
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/1_d3d48d29-072b-46a5-a9fe-3050c6617183_3840x.jpg?=75&v=1708317128"
+        ],
+        "sizes": ["S", "M", "L", "XL", "XXL"], 
+        "colors": ["#f0f0f0", "#2a4f45"], 
+        "description": "* Dri-FIT 技術保持乾爽 * 厚實加絨面料 * 右側設有拉鍊口袋 * 羅紋袖口及下擺 * 174/70，著L" 
+    },
+    { 
+        "id": "p8", 
+        "spu": "DD2129-326",
+        "name": "DD2129-326 Nike Sports 男款連帽外套", 
+        "price": 3980, 
+        "category": "外套", 
+        "image": "https://cdn.shopify.com/s/files/1/0603/3031/1875/products/main-square_82177268-75cd-410b-a5fc-e4f57cc0c029_3840x.jpg?=75&v=1693988007",
+        "images": [
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/products/main-square_82177268-75cd-410b-a5fc-e4f57cc0c029_3840x.jpg?=75&v=1693988007",
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/products/1_4e20af10-0b00-40f0-aa8e-bf375e42edc0_3840x.jpg?=75&v=1693988007",
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/products/2_96936914-3754-4588-ac9c-b646d42715d6_3840x.jpg?=75&v=1693988007"
+        ],
+        "sizes": [ "M", "L", "XL"], 
+        "colors": ["#2a4f45"], 
+        "description": "內層抓絨設計，適合秋冬戶外訓練。保持核心溫度同時不失透氣性。" 
+    },
+    { 
+        "id": "p9", 
+        "spu": "CZ7858-334",
+        "name": "CZ7858-334 Nike NSW Club Hoodie 橄欖綠", 
+        "price": 2780, 
+        "category": "帽踢", 
+        "image": "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/main-square_355f5950-ca6c-4b20-9309-5a2fc98dccda_3840x.jpg",
+        "images": [
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/main-square_355f5950-ca6c-4b20-9309-5a2fc98dccda_3840x.jpg?=75&v=1716877428"
+        ],
+        "sizes": ["S"], 
+        "colors": ["#2a4f45"], 
+        "description": "Nike Sportswear Tech Fleece Full-Zip Hoodie (Nike Tech Fleece 全拉鍊連帽外套)" 
+    }
+]
