@@ -1,5 +1,22 @@
 [
     { 
+        "id": "p1", 
+        "spu": "DR4529-077",
+        "name": "DR4529-077 Nike Forward Hoodie 女款 煙灰", 
+        "price": 2780, 
+        "category": "帽踢", 
+        "image": "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/main-square_175c6165-c8fd-4bb5-bf3e-eff938d881e1_3840x.png?=75&v=1708672417",
+        "images": [
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/main-square_175c6165-c8fd-4bb5-bf3e-eff938d881e1_3840x.png?=75&v=1708672417",
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/3_6940eb28-2ac1-4a5a-b913-e3daefe07589_3840x.jpg?=75&v=1708672416",
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/4_2fd89bdd-1428-4c37-8919-7455e36775e8_3840x.jpg?=75&v=1708672419",
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/1_def9ed14-8052-42ce-9698-e00111b7e90f_3840x.jpg?=75&v=1708672414"
+        ],
+        "sizes": ["S", "M", "L"], 
+        "colors": ["#f0f0f0"], 
+        "description": "Nike Sportswear Tech Fleece Full-Zip Hoodie" 
+    },
+    { 
         "id": "p7", 
         "spu": "FZ9041-126",
         "name": "FZ9041-126 龍年帽踢", 
@@ -55,11 +72,12 @@
         "category": "帽踢", 
         "image": "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/main-square_eb5bb500-b7b3-4373-826a-32a288e3da1f_3840x.jpg?=75&v=1699607881",
         "images": [
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/main-square_eb5bb500-b7b3-4373-826a-32a288e3da1f_3840x.jpg?=75&v=1699607881",
             "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/1_b8353ace-3582-4abf-b71e-4aa02657d6ba_3840x.jpg?=75&v=1699607880",
             "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/2_4d5f8fc0-107a-4244-a223-11e4ee428d48_3840x.jpg?=75&v=1699607882"
         ],
         "sizes": ["L"], 
         "colors": ["#f0f0f0"], 
-        "description": "Nike Sportswear Tech Fleece Full-Zip Hoodie (Nike Tech Fleece 全拉鍊連帽外套)" 
+        "description": "Nike Sportswear Tech Fleece Full-Zip Hoodie" 
     }
 ]
