@@ -237,7 +237,10 @@
 
             <!-- Info Side -->
             <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col h-1/2 md:h-full overflow-y-auto bg-white">
-                <span id="modal-category" class="text-[10px] font-bold text-[var(--braun-orange)] uppercase tracking-widest mb-3">Category</span>
+                <div class="flex items-center justify-between mb-3">
+                    <span id="modal-category" class="text-[10px] font-bold text-[var(--braun-orange)] uppercase tracking-widest">Category</span>
+                    <span id="modal-spu" class="text-[10px] font-mono text-gray-400"></span>
+                </div>
                 <h2 id="modal-title" class="text-3xl font-bold mb-2 text-black logo-font tracking-tight">Product Title</h2>
                 <div class="w-10 h-0.5 bg-gray-200 mb-6"></div>
                 
@@ -277,11 +280,25 @@
         import { getFirestore, collection, doc, getDocs, setDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // --- Configuration ---
-        // const firebaseConfig = JSON.parse(__firebase_config);
-        // const app = initializeApp(firebaseConfig);
-        // const auth = getAuth(app);
-        // const db = getFirestore(app);
-        // const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        let app, auth, db;
+        let isOffline = false;
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+        try {
+            if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+                const firebaseConfig = JSON.parse(__firebase_config);
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+            } else {
+                // If config isn't present, switch to offline
+                isOffline = true;
+                console.log("Firebase config missing. Initializing Offline Mode.");
+            }
+        } catch (e) {
+            console.warn("Error initializing Firebase, switching to Offline Mode:", e);
+            isOffline = true;
+        }
 
         // --- Global State ---
         let allProducts = [];
@@ -298,6 +315,7 @@
         const seedData = [
             { 
                 id: 'p1', 
+                spu: 'TI-01-BAS',
                 name: 'Ti-01 極簡結構T恤', 
                 price: 1280, 
                 category: '上衣', 
@@ -313,6 +331,7 @@
             },
             { 
                 id: 'p2', 
+                spu: 'DL-TC-RUN',
                 name: 'Dal-Tech 機能跑褲', 
                 price: 1880, 
                 category: '下著', 
@@ -328,6 +347,7 @@
             },
             { 
                 id: 'p3', 
+                spu: 'AR-DYN-JKT',
                 name: 'Aerodynamic 教練夾克', 
                 price: 3480, 
                 category: '外套', 
@@ -343,6 +363,7 @@
             },
             { 
                 id: 'p4', 
+                spu: 'MD-01-VST',
                 name: 'Module-1 訓練背心', 
                 price: 980, 
                 category: '上衣', 
@@ -358,6 +379,7 @@
             },
             { 
                 id: 'p5', 
+                spu: 'CR-CMP-PNT',
                 name: 'Core 壓縮長褲', 
                 price: 2180, 
                 category: '下著', 
@@ -372,6 +394,7 @@
             },
             { 
                 id: 'p6', 
+                spu: 'TI-CP-ACC',
                 name: 'Ti-Cap 速乾老帽', 
                 price: 880, 
                 category: '配件', 
@@ -386,9 +409,10 @@
             },
             { 
                 id: 'p7', 
+                spu: 'FZ9041-126',
                 name: 'FZ9041-126 龍年帽踢', 
                 price: 2680, 
-                category: '外套', 
+                category: '鞋類', 
                 image: 'https://cdn.shopify.com/s/files/1/0603/3031/1875/files/main_a0dbb4e0-0c20-4beb-bbb4-6467e8f371b6_3840x.jpg?=75&v=1708317125',
                 images: [
                     'https://cdn.shopify.com/s/files/1/0603/3031/1875/files/main_a0dbb4e0-0c20-4beb-bbb4-6467e8f371b6_3840x.jpg?=75&v=1708317125',
@@ -403,6 +427,7 @@
             },
             { 
                 id: 'p8', 
+                spu: 'DD2129-326',
                 name: 'DD2129-326 Nike Sports 男款連帽外套', 
                 price: 3980, 
                 category: '外套', 
@@ -418,6 +443,7 @@
             },
             { 
                 id: 'p9', 
+                spu: 'CZ7858-334',
                 name: 'CZ7858-334 Nike NSW Club Hoodie 橄欖綠', 
                 price: 2780, 
                 category: '外套', 
@@ -434,31 +460,48 @@
         // --- Functions ---
 
         async function initApp() {
-            // Auth Logic
-            //if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-            //    await signInWithCustomToken(auth, __initial_auth_token);
-            //} else {
-            //    await signInAnonymously(auth);
-            //}
+            if (isOffline) {
+                console.log("Starting in Offline Mode.");
+                allProducts = seedData;
+                renderFilters();
+                applyFilters();
+                // Update UI to show offline state
+                document.getElementById('product-count').textContent = "Offline Mode";
+                return;
+            }
 
-            //const user = auth.currentUser;
-            //if (user) {
-            //    await checkAndSeedData(user.uid);
-            //    await fetchProducts(user.uid);
-            //}
-            await checkAndSeedData();
+            try {
+                // Auth Logic
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                const user = auth.currentUser;
+                if (user) {
+                    await checkAndSeedData(user.uid);
+                    await fetchProducts(user.uid);
+                }
+            } catch (e) {
+                console.error("Connection failed, switching to offline mode:", e);
+                // Fallback to offline
+                allProducts = seedData;
+                renderFilters();
+                applyFilters();
+                document.getElementById('product-count').textContent = "Offline Mode";
+            }
         }
 
         async function checkAndSeedData(uid) {
             // Updated collection name to force re-seeding with new data structure
-            // const productsRef = collection(db, 'artifacts', appId, 'public', 'data', 'products_v3'); 
-            // const snapshot = await getDocs(productsRef);
+            const productsRef = collection(db, 'artifacts', appId, 'public', 'data', 'products_v4'); 
+            const snapshot = await getDocs(productsRef);
             
-            //if (snapshot.empty) {
-            if (true) {
+            if (snapshot.empty) {
                 console.log("Seeding Database with Images...");
                 const promises = seedData.map(item => 
-                    setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products_v3', item.id), item)
+                    setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products_v4', item.id), item)
                 );
                 await Promise.all(promises);
                 console.log("Database Seeded.");
@@ -466,7 +509,7 @@
         }
 
         async function fetchProducts(uid) {
-            const productsRef = collection(db, 'artifacts', appId, 'public', 'data', 'products_v3');
+            const productsRef = collection(db, 'artifacts', appId, 'public', 'data', 'products_v4');
             const q = query(productsRef); 
             
             try {
@@ -483,8 +526,12 @@
                 applyFilters();
                 
             } catch (e) {
-                console.error("Error fetching products:", e);
-                document.getElementById('product-grid').innerHTML = `<p class="col-span-full text-center text-red-500">無法載入商品，請稍後再試。</p>`;
+                console.error("Error fetching products, fallback to seed data:", e);
+                // Fallback
+                allProducts = seedData;
+                renderFilters();
+                applyFilters();
+                document.getElementById('product-count').textContent = "Offline Mode";
             }
         }
 
@@ -552,7 +599,10 @@
             const grid = document.getElementById('product-grid');
             const countLabel = document.getElementById('product-count');
             
-            countLabel.innerText = `${filteredProducts.length} items`;
+            if (countLabel.textContent !== "Offline Mode") {
+                countLabel.innerText = `${filteredProducts.length} items`;
+            }
+
             grid.innerHTML = '';
 
             if (filteredProducts.length === 0) {
@@ -599,6 +649,7 @@
         
         function openModal(product) {
             document.getElementById('modal-category').innerText = product.category;
+            document.getElementById('modal-spu').innerText = `SPU: ${product.spu || 'N/A'}`;
             document.getElementById('modal-title').innerText = product.name;
             document.getElementById('modal-price').innerText = `NT$ ${product.price.toLocaleString()}`;
             document.getElementById('modal-desc').innerText = product.description;
