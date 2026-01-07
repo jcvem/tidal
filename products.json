@@ -166,5 +166,28 @@
             "#9da3c4"
         ],
         "description": "(WMNS) Nike Sportswear 'Blue' DH4091-412"
+    },
+        {
+        "id": "DA0024-881",
+        "spu": "DA0024-881",
+        "name": "Men's Nike Sportswear 紅土橘男版帽踢 DA0024-881",
+        "price": "2780",
+        "category": "Hoodie",
+        "image": "https://cdn.shopify.com/s/files/1/0603/3031/1875/products/main-square_90960715-cfdd-4ea2-a28e-df1c5d69dcdc_1080x.jpg?=75&v=1694779551",
+        "images": [
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/products/main-square_90960715-cfdd-4ea2-a28e-df1c5d69dcdc_1080x.jpg?=75&v=1694779551",
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/products/1_2642de63-28af-476f-b095-26b633d1e7fe_3840x.jpg?=75&v=1694779551",
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/products/2_35ddcb25-5c20-42c7-a7c0-ebeeb1e1d84a_3840x.jpg?=75&v=1694779551",
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/products/3_6ed5779c-c25f-41c6-973c-ddfac05c25de_3840x.jpg?=75&v=1694779551",
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/products/4_e43cbbff-5c0e-4f7a-be91-b1f090fa862d_3840x.jpg?=75&v=1694779551"
+
+        ],
+        "sizes": [
+            "L"
+        ],
+        "colors": [
+            "#de6437"
+        ],
+        "description": "Men's Nike Sportswear French Terry Embroidered Logo Solid Color Orange Red DA0024-881"
     }
 ]
