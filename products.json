@@ -145,10 +145,10 @@
         "colors": ["#f0f0f0"], 
         "description": "Nike Sportswear Tech Fleece Full-Zip Hoodie" 
     },
-        {
-        "id": "DH4091-412",
+    {
+        "id": "p11",
         "spu": "DH4091-412",
-        "name": "(WMNS) Nike Sportswear 'Blue' DH4091-412",
+        "name": "(WMNS) Nike Sportswear 藍紫色女款帽踢 DH4091-412",
         "price": 2580,
         "category": "Hoodies",
         "image": "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/main-square_3a3ee9f3-6d4c-41af-9103-1cc8e191bcc7_3840x.jpg?=75&v=1731027856",
@@ -171,5 +171,5 @@
             "#9da3c4"
         ],
         "description": "(WMNS) Nike Sportswear 'Blue' DH4091-412"
-    },
+    }
 ]
