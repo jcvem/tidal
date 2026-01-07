@@ -61,6 +61,26 @@
         ],
         "description": "(WMNS) Nike Yoga Jersey Crop 'Pink' CQ8834-664"
     },
+    {
+        "id": "p4",
+        "spu": "CU6622-533",
+        "name": "(WMNS) Nike Sportswear Rhinestone Hoodie 'Red' CU6622-533",
+        "price": 3880,
+        "category": "Hoodies",
+        "image": "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/main-square_962c30d2-6f97-4d74-95be-ec73d4215c61_1080x.jpg?=75&v=1731399894",
+        "images": [
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/main-square_962c30d2-6f97-4d74-95be-ec73d4215c61_1080x.jpg?=75&v=1731399894",
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/1_988696bc-4137-4d95-8904-41fafa209f0f_1080x.jpg?=75&v=1731399894"
+        ],
+        "sizes": [
+            "L"
+        ],
+        "colors": [
+            "#bf849b"
+        ],
+        "description": "(WMNS) Nike Sportswear Rhinestone Hoodie 'Red' CU6622-533"
+    },
+
     { 
         "id": "p7", 
         "spu": "FZ9041-126",
