@@ -36,6 +36,31 @@
         ],
         "description": "Nike SB Skateboard Printing Pattern Casual Sports Gray Dark gray DD2094-050"
     },
+    {
+        "id": "p3",
+        "spu": "CQ8834-664",
+        "name": "(WMNS) Nike Yoga Jersey Crop 'Pink' CQ8834-664",
+        "price": 2180,
+        "category": "Hoodies",
+        "image": "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/main-square_3af440d6-a7ce-46fc-9bf8-87dc3987a419_1080x.jpg?=75&v=1731037214",
+        "images": [
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/main-square_3af440d6-a7ce-46fc-9bf8-87dc3987a419_1080x.jpg?=75&v=1731037214",
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/main-square_3af440d6-a7ce-46fc-9bf8-87dc3987a419_3840x.jpg?=75&v=1731037214",
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/1_6d975bfc-2f5c-4780-99ec-7d2f1d12f3b1_3840x.jpg?=75&v=1731037214",
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/2_82b19574-eca4-4ebc-b077-96e3538a6152_3840x.jpg?=75&v=1731037215",
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/3_b00c478b-6579-46b8-9db6-23ecb74d1b3d_3840x.jpg?=75&v=1731037215",
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/1_6d975bfc-2f5c-4780-99ec-7d2f1d12f3b1_1080x.jpg?=75&v=1731037214",
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/2_82b19574-eca4-4ebc-b077-96e3538a6152_1080x.jpg?=75&v=1731037215",
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/files/3_b00c478b-6579-46b8-9db6-23ecb74d1b3d_1080x.jpg?=75&v=1731037215"
+        ],
+        "sizes": [
+            "S"
+        ],
+        "colors": [
+            "Pink"
+        ],
+        "description": "(WMNS) Nike Yoga Jersey Crop 'Pink' CQ8834-664"
+    },
     { 
         "id": "p7", 
         "spu": "FZ9041-126",
