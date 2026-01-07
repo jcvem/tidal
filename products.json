@@ -16,6 +16,26 @@
         "colors": ["#f0f0f0"], 
         "description": "Nike Sportswear Tech Fleece Full-Zip Hoodie" 
     },
+    {
+        "id": "p2",
+        "spu": "DD2094-050",
+        "name": "Nike SB Skateboard Printing Pattern Casual Sports Gray Dark gray DD2094-050",
+        "price": 2480,
+        "category": "Hoodie",
+        "image": "https://cdn.shopify.com/s/files/1/0603/3031/1875/products/main-square_66310a7b-36be-4877-808c-033e35d8e197.jpg?v=1694778291",
+        "images": [
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/products/main-square_66310a7b-36be-4877-808c-033e35d8e197_3840x.jpg?v=1694778291",
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/products/1_fb20f9b7-7283-40f3-a4f8-1a2d03947df4_3840x.jpg?v=1694778291",
+            "https://cdn.shopify.com/s/files/1/0603/3031/1875/products/2_04be997e-7d7d-4572-a3a0-59ceb034e248_3840x.jpg?v=1694778291"
+        ],
+        "sizes": [
+            "S", "L"
+        ],
+        "colors": [
+            "#444444"
+        ],
+        "description": "Nike SB Skateboard Printing Pattern Casual Sports Gray Dark gray DD2094-050"
+    },
     { 
         "id": "p7", 
         "spu": "FZ9041-126",
